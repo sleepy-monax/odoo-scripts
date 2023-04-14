@@ -1,6 +1,6 @@
 #!/bin/sh
 
-ODOO_ROOT=workspace
+ODOO_ROOT=community
 ODOO_DB=odoo
 ODOO_ADDONS=addons
 ODOO_EXTRA=""
