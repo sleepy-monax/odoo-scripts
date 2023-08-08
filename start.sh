@@ -4,6 +4,7 @@ ODOO_ROOT=community
 ODOO_DB=odoo
 ODOO_ADDONS=addons
 ODOO_EXTRA=""
+ODOO_TEST=""
 
 function clearDatabase() {
     echo "Are you sure to clear the database '$ODOO_DB'? [Y/n]"
@@ -29,6 +30,7 @@ function usage() {
     echo "  -d, --database          Name of the database to use"
     echo "  -a, --addons            Path to the addons directory"
     echo "  -h, --help              Show this help"
+    echo "  -t, --test              Run a specific test"
 }
 
 while [ "$1" != "" ]; do
@@ -52,6 +54,10 @@ while [ "$1" != "" ]; do
                                 usage
                                 exit
                                 ;;
+        -t | --test )           shift
+                                ODOO_TEST="$ODOO_TEST --test-enable --stop-after-init --log-level=test --test-tags $1"
+                                shift
+                                ;;
         --dev )                 shift
                                 ODOO_EXTRA="$ODOO_EXTRA --dev=$1"
                                 ;;
@@ -63,5 +69,5 @@ echo "Starting Odoo (ODOO_ROOT=$ODOO_ROOT, ODOO_DB=$ODOO_DB, ODOO_ADDONS=$ODOO_A
 echo "Press Ctrl+C to stop"
 echo ""
 pushd $ODOO_ROOT
-./odoo-bin --addons-path="$ODOO_ADDONS" -d $ODOO_DB -i base,website $ODOO_EXTRA
+./odoo-bin --addons-path="$ODOO_ADDONS" -d $ODOO_DB -i base,mass_mailing,test_website,website_slides $ODOO_EXTRA $ODOO_TEST
 popd
