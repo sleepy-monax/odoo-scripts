@@ -13,10 +13,10 @@ pushd /
 
     echo "Initializing postgresql database"
     sudo -u postgres initdb --locale=C.UTF-8 --encoding=UTF8 -D /var/lib/postgres/data --data-checksums
-    
+
     echo "Starting postgresql"
     sudo systemctl start postgresql
 
     echo "Creating postgresql user"
-    sudo -u postgres createuser -s nicolas
+    sudo -u postgres createuser -s $USER
 popd
