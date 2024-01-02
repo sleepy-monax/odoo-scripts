@@ -16,7 +16,6 @@ function clearDatabase() {
         pushd /
             echo "Clearing database..."
             sudo -u postgres dropdb $ODOO_DB || true # The database may not exist
-            sudo -u postgres createdb $ODOO_DB
         popd
     fi
 }
@@ -32,6 +31,7 @@ function usage() {
     echo "  -h, --help              Show this help"
     echo "  -t, --test              Run a specific test"
     echo "  -s, --shell             Run the shell"
+    echo "  -p, --populate          Populate the database with demo data"
     echo "  --dev                   Enable developer mode"
 }
 
@@ -64,6 +64,10 @@ while [ "$1" != "" ]; do
                                 ODOO_EXTRA_PREFIX="shell"
                                 ODOO_EXTRA="$ODOO_EXTRA --shell-interface=python"
                                 ;;
+        -p | --populate )       shift
+                                ODOO_EXTRA_PREFIX="populate"
+                                ODOO_EXTRA="$ODOO_EXTRA --size=large --model=openacademy.session"
+                                ;;
         --dev )                 shift
                                 ODOO_EXTRA="$ODOO_EXTRA --dev=$1"
                                 ;;
@@ -75,5 +79,5 @@ echo "Starting Odoo (ODOO_ROOT=$ODOO_ROOT, ODOO_DB=$ODOO_DB, ODOO_ADDONS=$ODOO_A
 echo "Press Ctrl+C to stop"
 echo ""
 pushd $ODOO_ROOT
-./odoo-bin $ODOO_EXTRA_PREFIX --addons-path="$ODOO_ADDONS" -d $ODOO_DB -i base,mass_mailing,test_website,website_slides,test_impex $ODOO_EXTRA
+./odoo-bin $ODOO_EXTRA_PREFIX --addons-path="$ODOO_ADDONS" -d $ODOO_DB -i base,test_new_api,website $ODOO_EXTRA
 popd
